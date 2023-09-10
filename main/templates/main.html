@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory List</title>
+    
+</head>
+<body>
+    <h1>Welcome to Fantasy Guild Market!</h1>
+    <h3>by {{name}} from {{class}}</h3>
+    <h3 id = "amount">amount: 0 gil</h3>
+    <!-- <button onclick="addAmount()">Add Amount</button> -->
+    <table style="width: 80% ;">
+        <tr>
+            <th>NAME</th>
+            <th>PRICE</th>
+            <th>POWER</th>
+            <th>DESCRIPTION</th>
+        </tr>
+        {% for x in range%}
+            <tr>
+                <td>{{ items.x }}</td>
+                <td>{{ price.x }}</td>
+                <td>{{ power.x }}</td>
+                <td>{{ description.x }}</td>
+            </tr>
+        {% endfor %}
+    
+    </table>
+    
+
+    <!-- <button onclick="addItem()">Add Item</button>
+    <button onclick="removeItem()">Remove Item</button>
+    
+    <script>
+        function addItem() {
+            var newItem = prompt("Enter the item name:");
+            if (newItem) {
+                var inventoryList = document.getElementById("inventory-list");
+                var listItem = document.createElement("li");
+                listItem.textContent = newItem;
+                inventoryList.appendChild(listItem);
+            }
+        }
+
+        function removeItem() {
+            var inventoryList = document.getElementById("inventory-list");
+            var items = inventoryList.getElementsByTagName("li");
+
+            if (items.length > 0) {
+                // Remove the last item in the list
+                inventoryList.removeChild(items[items.length - 1]);
+            } else {
+                alert("Inventory list is empty.");
+            }
+        }
+        function addAmount() {
+            var addMoney = prompt("Enter amount: ");
+            if(addMoney.valueOf() < 0) {
+                alert("amount is not valid!");
+            } else {
+                
+            }
+        }
+        
+    </script> -->
+</body>
+</html>
+</div>
