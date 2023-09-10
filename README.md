@@ -10,7 +10,7 @@
 6. Tambahkan "*" ke dalam ALLOWED_HOSTS agar mendapatkan akses host dari aplikasi web sebagai keperluan deployment.
 7. Jalankan berkas manage.py dengan menyalakan virtual environment terlebih dahulu (step 3), lalu menjalankan command **python3 manage.py runserver** (Mac/Linux).
 8. Lalu buka [localhost](http://localhost:8000/).
-⋅⋅* Untuk mematikan server bisa dilakukan dengan menekan control + C dan command **deactivate** untuk mematikan env.
+    * Untuk mematikan server bisa dilakukan dengan menekan control + C dan command **deactivate** untuk mematikan env.
 9. Membuat repositori GitHub baru bernama fantasy-guild-market dengan visibilitas public dan settings yang lain default.
 10. Jalankan command **git init** di terminal dengan cd direktori utama file lokal, yaitu FANTASY-GUILD-MARKET.
 11. Buat berkas .gitignore di dalam direktori utama dengan isi:
@@ -154,6 +154,7 @@ GitHub.sublime-settings
 .history
 ```
 Berkas ini bertujuan untuk mengabaikan file - file dan direktori yang harus diabaikan oleh Git. 
+
 12. Lakukan git add, commit, dan push dari direktori repositori lokal. 
 13. Login/Signup ke akun [Adaptable.io](https://adaptable.io/) menggunakan akun GitHub.
 14. Saat sudah login, klik New App, lalu pilih Connect an Existing Repository. Hal ini bertujuan agar semua repositori yang ada di akun GitHub kamu bisa terbaca. 
