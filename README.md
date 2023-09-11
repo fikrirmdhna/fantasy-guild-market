@@ -1,5 +1,5 @@
 ## TAUTAN APLIKASI ADAPTABLE
-[Fantasy Guild Market](https://fantasy-guild-market.adaptable.app)
+[Fantasy Guild Market](https://fantasy-guild-market.adaptable.app/main/)
 
 ## MEMBUAT PROYEK DJANGO BARU
 1. Membuat direktori utama, yaitu FANTASY-GUILD-MARKET
@@ -9,7 +9,7 @@
 5. Membuat project Django bernama fantasy_guild_market dengan command **django-admin startproject fantasy_guild_market .** Lalu subdirektori akan terbuat dengan file bawaan, yaitu: __init__.py, asgi.py, settings.py, urls.py, wsgi.py.
 6. Tambahkan "*" ke dalam ALLOWED_HOSTS agar mendapatkan akses host dari aplikasi web sebagai keperluan deployment.
 7. Jalankan berkas manage.py dengan menyalakan virtual environment terlebih dahulu (step 3), lalu menjalankan command **python3 manage.py runserver** (Mac/Linux).
-8. Lalu buka [localhost](http://localhost:8000/).
+8. Lalu buka [localhost](http://localhost:8000/main/).
     * Untuk mematikan server bisa dilakukan dengan menekan control + C dan command **deactivate** untuk mematikan env.
 9. Membuat repositori GitHub baru bernama fantasy-guild-market dengan visibilitas public dan settings yang lain default.
 10. Jalankan command **git init** di terminal dengan cd direktori utama file lokal, yaitu FANTASY-GUILD-MARKET.
