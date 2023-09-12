@@ -39,13 +39,14 @@
             <th>POWER</th>
             <th>DESCRIPTION</th>
         </tr>
-           
+        {% for x in list_items %} 
         <tr>
-            <td>{{ items }}</td>
-            <td>{{ price }} gil</td>
-            <td>+{{ power }}</td>
-            <td>{{ description }}</td>
+            <td>{{ x.item }}</td>
+            <td>{{ x.price }} gil</td>
+            <td>+{{ x.power }}</td>
+            <td>{{ x.description }}</td>
         </tr>
+        {% endfor %}
     </table>
 </body>
 </html>
