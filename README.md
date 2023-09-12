@@ -286,5 +286,5 @@ Ketiga itu adalah pola bentuk arsitektur dalam sebuah proyek yang memberikan mod
     | :--------: |:--------:| :-------:|
     | Input client diterima oleh Controller     |   Input client diterima oleh View        |  Input client diterima oleh View dan menjadi entry point dari aplikasi        |
     | Controller dan View memiliki relasi one-to-many  | Template dan View memiliki relasi one-to-one | View dan ViewModel memiliki relasi one-to-many |
-    | Rumit untuk dimodifikasi  | mudah untuk dimodifikasi | mudah untuk dimodifikasi jika data binding tidak terlalu complex  |
-    | tidak mememerlukan URL Mapping | memerlukan URL Mapping  | tidak terlalu bergantung terhadap URL Mapping |
+    | Rumit untuk dimodifikasi  | Mudah untuk dimodifikasi | Mudah untuk dimodifikasi jika data binding tidak terlalu complex  |
+    | Tidak mememerlukan URL Mapping | Memerlukan URL Mapping  | Tidak terlalu bergantung terhadap URL Mapping |
