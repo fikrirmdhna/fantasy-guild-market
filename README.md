@@ -199,7 +199,7 @@ Berikut adalah tautan deployment app saya [Fantasy Guild Market](https://fantasy
         power = models.IntegerField()
         date_added = models.DateField(auto_now_add=True)
     ```
-2. Jalankan perintah `python manage.py makemigrations` dan `python manage.py migrate`, kode ini bertujuan untuk menciptakan dan mengaplikasikan perubahan model ke dalam basis data.
+2. Jalankan perintah `python3 manage.py makemigrations` dan `python3 manage.py migrate` (Mac/Linux), kode ini bertujuan untuk menciptakan dan mengaplikasikan perubahan model ke dalam basis data.
 
 ## Membuat fungsi pada views.py di dalam direktori main
 1. Buka file views.py dan tambahkan `from django.shortcuts import render` yang bertujuan agar data - data yang berada di dalam struktur data views.py dapat di-render dan ditampilkan di HTML.
