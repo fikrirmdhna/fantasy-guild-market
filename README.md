@@ -310,3 +310,179 @@ Ketiga itu adalah pola bentuk arsitektur dalam sebuah proyek yang memberikan mod
     | Controller dan View memiliki relasi one-to-many  | Template dan View memiliki relasi one-to-one | View dan ViewModel memiliki relasi one-to-many |
     | Rumit untuk dimodifikasi  | Mudah untuk dimodifikasi | Mudah untuk dimodifikasi jika data binding tidak terlalu complex  |
     | Tidak mememerlukan URL Mapping | Memerlukan URL Mapping  | Tidak terlalu bergantung terhadap URL Mapping |
+
+
+## Membuat input form untuk menambahkan object
+1. Membuat file forms.py di direktori main untuk menampilkan page form baru yang berisi kode: 
+    ```python
+    from django.forms import ModelForm
+    from main.models import Items
+
+    class ProductForm(ModelForm):
+        class Meta:
+            model = Items
+            fields = ["name", "price", "power", "description"]
+    ```
+    Model di sini adalah Items yang akan menyimpan item baru jika form sudah selesai diisi dengan isian fields yang diperlukan.
+
+2. Lalu menambahkan beberapa import dan function untuk menambah item baru di views.py yang berada di direktori main, yaitu:
+    ```python
+    from django.http import HttpResponseRedirect
+    from main.forms import ProductForm
+    from django.urls import reverse
+    ```
+    ```python
+    def create_product(request):
+        form = ProductForm(request.POST or None)
+
+        if form.is_valid() and request.method == "POST":
+            form.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+
+        context = {'form': form}
+        return render(request, "create_product.html", context)
+    ```
+    `form = ProductForm(request.POST or None)` kode ini digunakan untuk membentuk sebuah form dan menyimpan data yang diisi sesuai dari fields yang ada di forms.py, lalu dicek apakah form valid dan request methodnya POST `if form.is_valid() and request.method == "POST":`, maka form akan di save `form.save()` dan `HttpResponseRedirect(reverse('main:show_main'))` akan men-direct page ke page main:show_main atau page utama. 
+
+3. Menambahkan objects pada fungsi show_main yang ada di views.py menjadi:
+    ```python
+    def show_main(request):
+        items = Items.objects.all()
+
+        context = {
+            'name': 'Fikri Dhiya Ramadhana',
+            'class': 'PBP C',
+            'amount': 0,
+            'items' : items,
+        }
+
+        return render(request, "main.html", context)
+    ```
+    `items = Items.objects.all()` kode ini digunakan untuk mengambil semua objek yang berada di database.
+
+4. Menambahkan import function dan path create_product ke urls.pt yang berada di direktori main dengan:
+    ```python
+    from main.views import show_main, create_product
+    ```
+    dan menambahkan path di bagian urlpatterns
+    ```python
+    ...
+    path('create-product', create_product, name='create_product'),
+    ...
+    ```
+
+5. Membuat berkas baru pada main/templates yang bernama create_product.html dengan isi:
+    ```html
+    {% extends 'base.html' %} 
+
+    {% block content %}
+    <h1>Add New Product</h1>
+
+    <form method="POST">
+        {% csrf_token %} <!-- kode yang otomatis di generate untuk mencegah serangan bahaya -->
+        <table>
+            {{ form.as_table }} <!-- membuat fields form menjadi tabel -->
+            <tr>
+                <td></td>
+                <td>
+                     <input type="submit" value="Add Product"/> <!-- untuk men-submit dan mengirim request ke function create_product di views -->
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    {% endblock %}
+    ```
+
+6. Tambahkan `{% block content %}` dan `{% endblock content %}` di paling atas dan di paling bawah dalam main.html serta tambahkan tombol Add New Product, seperti:
+    ```html
+    <a href="{% url 'main:create_product' %}">
+        <button>
+            Add New Product
+        </button>
+    </a>
+    ```
+
+## Menambahkan 5 fungsi views.py untuk melihat object dalam format HTML, XML, JSON, XML_by_ID, dan JSON_by_ID 
+* format HTML seperti step no. 2, 3, 4, 5, dan 6 di atas.
+1. Di dalam views.py direktori main, tambahkan import:
+    ```python
+    from django.http import HttpResponse
+    from django.core import serializers
+    ```
+
+2. Lalu, buatlah function:
+    * format XML
+    ```python
+    def show_xml(request):
+        data = Product.objects.all()
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    ```
+    * format JSON
+    ```python
+    def show_json(request):
+        data = Product.objects.all()
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+    * format XML_by_ID
+    ```python
+    def show_xml_by_id(request, id):
+        data = Product.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    ```
+    * format JSON_by_ID
+    ```python
+    def show_json_by_id(request, id):
+        data = Product.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+
+## Membuat routing URL masing - masing format
+1. Tambahkan import pada urls.py direktori main menjadi:
+    ```python
+    from main.views import show_main, create_product, show_xml, show_json, show_xml_by_id, show_json_by_id 
+    ```
+
+2. Kemudian tambahkan path di urlpatterns-nya dengan: 
+    ```python
+    ...
+    path('xml/', show_xml, name='show_xml'),
+    path('json/', show_json, name='show_json'), 
+    path('xml/<int:id>/', show_xml_by_id, name='show_xml_by_id'),
+    path('json/<int:id>/', show_json_by_id, name='show_json_by_id'), 
+    ...
+    ```
+
+## Perbedaan antaran form POST dan form GET di Django
+* form POST: biasanya digunakan dalam pembuatan form login, register, atau add new product dalam tugas PBP ini karena POST method sendiri mengumpulkan data, lalu data akan dikodekan untuk transmisi yang akan dikirimkan ke server/database, kemudian menerima respon dari form tersebut.
+
+* form GET: biasanya digunakan dalam form kolom pencarian atau search box karena method ini menggabungkan data lalu dikirim ke dalam string yang akan digunakan untuk membuat URL dan GET ini digunakan untuk menerima permintaan saja dan tidak mengubah keadaan database/sistem.
+
+## Perbedaan utama antara XML, JSON, dan HTML dalam konteks pengiriman data
+ | XML     | JSON    | HTML  |
+| :--------: |:--------:| :-------:|
+| digunakan untuk pertukaran data antara aplikasi yang berbeda yang berupa data berbasis teks dan data terstruktur dengan baik     |  data yang berbasis syntax key-value sebagai representasi dari objek array dan pertukaran data berjalan di Application Programming Interface (API)   |  bahasa markup untuk membuat tampilan dan struktur webpage, data yang ada akan dimuat untuk menampilkan tampilan webpage   |
+
+## Mengapa JSON sering digunakan dalam pertukaran data antara aplikasi web modern
+JSON sering digunakan dalam pertukaran data karena: 
+* bahasanya yang ringkas dan mudah dipahami
+* data yang digunakan terstruktur 
+* dapat diproses secara cepat
+* sering digunakan dalam pengembangan API berbasis REST (Representational State Transfer)
+* mendukung berbagai tipe data dan kompatibel dengan javascript
+
+## Hasil akses URL pada Postman
+1. HTML
+![](image/Screenshot%202023-09-19%20at%2008.28.50.png)
+
+2. XML
+![](image/Screenshot%202023-09-19%20at%2008.29.12.png)
+
+3. JSON
+![](image/Screenshot%202023-09-19%20at%2008.29.39.png)
+
+4. XML by ID
+![](image/Screenshot%202023-09-19%20at%2008.29.54.png)
+
+5. JSON by ID
+![](image/Screenshot%202023-09-19%20at%2008.30.06.png)

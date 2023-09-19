@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <div>
@@ -8,6 +10,7 @@
     <style>
         div{
             font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
         }
         h1{
             text-align: center;
@@ -35,6 +38,11 @@
             background-color:greenyellow;
             text-align: center;
         }
+        a{
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
         body{
             background-color:honeydew;
             background-blend-mode: difference;
@@ -42,6 +50,7 @@
     </style>
 </head>
 <body>
+   
     <h1>Welcome to Fantasy Guild Market!</h1>
     <h3>by {{name}} from {{class}}</h3>
     <h3 id = "amount">amount: {{ amount }} gil</h3>
@@ -52,16 +61,34 @@
             <th>PRICE</th>
             <th>POWER</th>
             <th>DESCRIPTION</th>
+            <th>Del</th>
         </tr>
-        {% for x in list_items %} 
+        {% for item in items %} 
         <tr>
-            <td>{{ x.item }}</td>
-            <td>{{ x.price }} gil</td>
-            <td>+{{ x.power }}</td>
-            <td>{{ x.description }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.price }} gil</td>
+            <td>+{{ item.power }}</td>
+            <td>{{ item.description }}</td>
+            <td>
+                <a href="delete/{{ item.id }}">
+                    <button>
+                        X
+                    </button>
+                </a>
+            </td>
         </tr>
         {% endfor %}
     </table>
+    <a href="{% url 'main:create_product' %}">
+        <button>
+            Add New Product
+        </button>
+    </a>
+    
+    <script>
+
+    </script>
 </body>
 </div>
 </html>
+{% endblock content %}
