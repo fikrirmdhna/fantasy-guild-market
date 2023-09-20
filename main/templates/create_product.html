@@ -1,8 +1,26 @@
 {% extends 'base.html' %} 
 
 {% block content %}
-<h1>Add New Product</h1>
+<style>
+    *{
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    }
+    .element{
+        display: flex;
+        justify-content: center;
+    }
+    .h1{
+        text-align: center;
+    }
+    body{
+        background-color: honeydew;
+    }
 
+</style>
+
+<body>
+<h1 class="h1">Add New Product</h1>
+<div class="element">
 <form method="POST">
     {% csrf_token %}
     <table>
@@ -15,5 +33,6 @@
         </tr>
     </table>
 </form>
-
+</div>
+</body>
 {% endblock %}

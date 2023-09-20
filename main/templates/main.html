@@ -79,6 +79,9 @@
         </tr>
         {% endfor %}
     </table>
+
+    <h3>total item in inventory: {{ items|length }}</h3>
+
     <a href="{% url 'main:create_product' %}">
         <button>
             Add New Product
