@@ -61,6 +61,8 @@
             <th>PRICE</th>
             <th>POWER</th>
             <th>DESCRIPTION</th>
+            <th>Amount</th>
+            <th>Qty</th>
             <th>Del</th>
         </tr>
         {% for item in items %} 
@@ -69,6 +71,19 @@
             <td>{{ item.price }} gil</td>
             <td>+{{ item.power }}</td>
             <td>{{ item.description }}</td>
+            <td>{{ item.amount }}</td>
+            <td>
+                <a href="increment/{{ item.id }}">
+                    <button>
+                        +
+                    </button>
+                </a>
+                <a href="decrement/{{ item.id }}">
+                    <button>
+                        -
+                    </button>
+                </a>
+            </td>
             <td>
                 <a href="delete/{{ item.id }}">
                     <button>

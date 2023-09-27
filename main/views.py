@@ -90,3 +90,19 @@ def show_json_by_id(request, id):
 def delete(request, id):
     Items.objects.get(pk=id).delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+def increment(request, id):
+    items = Items.objects.get(pk=id)
+    if(items.amount > 0):
+        items.amount +=1
+        items.save()
+    return HttpResponseRedirect(reverse('main:show_main'))
+
+def decrement(request, id):
+    items = Items.objects.get(pk=id)
+    if(items.amount > 0):
+        items.amount -=1
+        items.save()
+    if(items.amount==0):
+        items.delete()
+    return HttpResponseRedirect(reverse('main:show_main'))
