@@ -486,3 +486,292 @@ JSON sering digunakan dalam pertukaran data karena:
 
 5. JSON by ID
 ![](image/Screenshot%202023-09-19%20at%2008.30.06.png)
+
+## Mengimplementasikan fungsi registrasi, login, dan logout
+1. Tambahkan import pada views.py:
+    * untuk register
+        ```python
+        from django.shortcuts import redirect
+        from django.contrib.auth.forms import UserCreationForm
+        from django.contrib import messages
+        ```
+    * untuk login
+        ```python
+        from django.contrib.auth import authenticate, login
+        ```
+    * untuk logout
+        ```python
+        from django.contrib.auth import logout
+        ```
+
+2. Lalu tambahkan fungsi, masing - masing function:
+    * untuk register
+        ```python
+        def register(request):
+            form = UserCreationForm()
+
+            if request.method == "POST":
+                form = UserCreationForm(request.POST)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Your account has been successfully created!')
+                    return redirect('main:login')
+            context = {'form':form}
+            return render(request, 'register.html', context)
+        ```
+    * untuk login
+        ```python
+        def login_user(request):
+            if request.method == 'POST':
+                username = request.POST.get('username')
+                password = request.POST.get('password')
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('main:show_main')
+                else:
+                    messages.info(request, 'Sorry, incorrect username or password. Please try again.')
+            context = {}
+            return render(request, 'login.html', context)
+        ```
+    * untuk logout
+        ```python
+        def logout_user(request):
+            logout(request)
+            return redirect('main:login')
+        ```
+
+3. Buat berkas html baru di main/templates, yaitu:
+    * register.html
+        ```html
+        {% extends 'base.html' %}
+
+        {% block meta %}
+            <title>Register</title>
+        {% endblock meta %}
+
+        {% block content %}  
+
+        <div class = "login">
+            
+            <h1>Register</h1>  
+
+                <form method="POST" >  
+                    {% csrf_token %}  
+                    <table>  
+                        {{ form.as_table }}  
+                        <tr>  
+                            <td></td>
+                            <td><input type="submit" name="submit" value="Daftar"/></td>  
+                        </tr>  
+                    </table>  
+                </form>
+
+            {% if messages %}  
+                <ul>   
+                    {% for message in messages %}  
+                        <li>{{ message }}</li>  
+                        {% endfor %}  
+                </ul>   
+            {% endif %}
+
+        </div>  
+
+        {% endblock content %}
+        ```
+    * login.html
+        ```html
+        {% extends 'base.html' %}
+
+        {% block meta %}
+            <title>Login</title>
+        {% endblock meta %}
+
+        {% block content %}
+
+        <div class = "login">
+
+            <h1>Login</h1>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                <table>
+                    <tr>
+                        <td>Username: </td>
+                        <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+                    </tr>
+                            
+                    <tr>
+                        <td>Password: </td>
+                        <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input class="btn login_btn" type="submit" value="Login"></td>
+                    </tr>
+                </table>
+            </form>
+
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}     
+                
+            Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+
+        </div>
+
+        {% endblock content %}
+        ```
+    * khusus untuk logout hanya menambahkan button di main.html
+        ```html
+        ...
+        <a href="{% url 'main:logout' %}">
+            <button>
+                Logout
+            </button>
+        </a>
+        ...
+        ```
+
+4. Tambahkan import dan path ke main/urls.py dan urlpatterns main/urls.py
+    ```python
+    from main.views import register, login_user, logout_user
+    ```
+    ```python
+    ...
+    path('register/', register, name='register'),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+    ...
+    ```
+
+## Membuat dua akun pengguna dengan masing - masing tiga dummy data
+1. akun fikri2211
+![](image/Screenshot%202023-09-26%20at%2020.06.46.png)
+
+2. akun dummy1
+![](image/Screenshot%202023-09-26%20at%2020.07.05.png)
+
+## Menghubungkan model Item dengan User
+1. Menambah import dan model pada main/models.py:
+    ```python
+    ...
+    from django.contrib.auth.models import User
+    ...
+    ```
+    ```python
+    class Items(models.Model):
+        ...
+        user = models.ForeignKey(User, on_delete=models.CASCADE)
+        ...
+    ```
+
+2. Mengubah function create_product di main/views.py
+    ```python
+    def create_product(request):
+        form = ProductForm(request.POST or None)
+
+        if form.is_valid() and request.method == "POST":
+            product = form.save(commit=False)
+            product.user = request.user
+            product.save()
+            return HttpResponseRedirect(reverse('main:show_main'))
+        ...
+    ```
+
+3. Mengganti value dari key name untuk mereturn nama user yang login
+    ```python
+    def show_main(request):
+        Items = Items.objects.filter(user=request.user)
+
+        context = {
+            'name': request.user.username,
+            ...
+        }
+    ...
+    ```
+
+4. Jalankan command `python3 manage.py makemigrations` dan `python3 manage.py migrate` untuk menyimpan perubahan pada model.
+
+## Menerapkan cookies seperti last login pada halaman utama
+1. Tambahkan import ke views.py:
+    ```python
+    import datetime
+    from django.http import HttpResponseRedirect
+    from django.urls import reverse
+    ```
+
+2. Mengubah kode fucntion login_user di bagian:
+    ```python
+    ...
+    if user is not None:
+        login(request, user)
+        response = HttpResponseRedirect(reverse("main:show_main")) 
+        response.set_cookie('last_login', str(datetime.datetime.now()))
+        return response
+    ...
+    ```
+
+3. Menambahkan kode last_login ke dalam context show_main wiews.py:
+    ```python
+    context = {
+        ...
+        'last_login': request.COOKIES['last_login'],
+        ...
+    }
+    ```
+
+4. Ubah function logout_user menjadi:
+    ```python
+    def logout_user(request):
+        logout(request)
+        response = HttpResponseRedirect(reverse('main:login'))
+        response.delete_cookie('last_login')
+        return response
+    ```
+
+5. Menambahkan potongan kode di dalam main.html untuk menampilkan sesi terakhir login:
+    ```html
+    ...
+    <h5>Sesi terakhir login: {{ last_login }}</h5>
+    ...
+    ```
+
+## Django UserCreationForm itu apa? Apa kelebihan dan kekurangannya?
+
+* UserCreationForm adalah suatu bentuk form untuk mendaftarkan user atau membuat akun baru.
+
+    * Kelebihan: 
+        1. Lebih mudah digunakan.
+        2. Validasi otomatis.
+        3. Aman karena sudah berintegrasi dengan Authentication Framework.
+
+    * Kekurangan:
+        1. Keterbatasan desain.
+        2. Customization yang terbatas.
+        3. Bergantung pada framework Django.
+
+## Perbedaan antara Authentication dengan Authorization
+| Authentication     | Authorization    | 
+| :--------: |:--------:| 
+| merupakan proses verifikasi atau pengecekan identitas seseorang atau login.   | pemberian otoritas atau proses verifikasi jika suatu user mempunya akses terhadap sistem. |  
+
+## Apa itu cookies dalam konteks aplikasi web dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna
+
+* Cookies adalah potongan data yang disimpan di sisi klien biasanya untuk menyimpan session id. Cookies juga berguna untuk mengingat informasi login dari si pengguna. 
+
+* Cara Django menggunakan cookies untuk mengelola sesi data pengguna adalah:
+    1. Membuat session cookies.
+    2. Menyimpan data berupa session id.
+    3. Mengirim cookie ke klien.
+    4. Menerima cookie di permintaan selanjutnya.
+    5. Mengakses session data.
+
+## Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
+
+* Dalam penggunaan cookies, kita harus mewaspadai terkait data apa yang disimpan ke dalam cookies bukanlah data sensitif dan selalu memvalidasi data sesi pengguna agar tidak terkena session hijacking.
