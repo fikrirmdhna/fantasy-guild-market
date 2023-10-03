@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% block content %}
+{% load static %}
+{% block meta %}
 <!DOCTYPE html>
 <html lang="en">
 <div>
@@ -7,112 +8,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory App</title>
-    <style>
-        div{
-            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-            text-align: center;
-        }
-        h1{
-            text-align: center;
-        }
-        h3{
-            text-align: center;
-        }
-        table {
-            margin-left: auto;
-            margin-right: auto;
-            border-style: solid;
-            border-color: rgb(34, 72, 175);   
-        }
-        th{
-            border-style: outset;
-            border-color: rgb(34, 72, 175);
-            padding: 5px;
-            background-color: lightgrey;
-            text-align: center;
-            font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;;
-        }
-        td{
-            border-style: solid;
-            border-color: rgb(29, 149, 127);
-            background-color:greenyellow;
-            text-align: center;
-        }
-        a{
-            justify-content: center;
-            align-items: center;
-            height: 200px;
-        }
-        body{
-            background-color:honeydew;
-            background-blend-mode: difference;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
 </head>
-<body>
-   
-    <h1>Welcome to Fantasy Guild Market!</h1>
-    <h3>by {{name}} from {{class}}</h3>
-    <h3 id = "amount">amount: {{ amount }} gil</h3>
-    <!-- <button onclick="addAmount()">Add Amount</button> -->
-    <table style="width: 80% ;">
-        <tr>
-            <th>NAME</th>
-            <th>PRICE</th>
-            <th>POWER</th>
-            <th>DESCRIPTION</th>
-            <th>Amount</th>
-            <th>Qty</th>
-            <th>Del</th>
-        </tr>
-        {% for item in items %} 
-        <tr>
-            <td>{{ item.name }}</td>
-            <td>{{ item.price }} gil</td>
-            <td>+{{ item.power }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.amount }}</td>
-            <td>
-                <a href="increment/{{ item.id }}">
-                    <button>
-                        +
-                    </button>
-                </a>
-                <a href="decrement/{{ item.id }}">
-                    <button>
-                        -
-                    </button>
-                </a>
-            </td>
-            <td>
-                <a href="delete/{{ item.id }}">
-                    <button>
-                        X
-                    </button>
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h3>total item in inventory: {{ items|length }}</h3>
+{% endblock meta %}
+{% block content %}
+<style>
     
-    <a href="{% url 'main:create_product' %}">
-        <button>
-            Add New Product
-        </button>
-    </a>
-    <a href="{% url 'main:logout' %}">
-        <button>
-            Logout
-        </button>
-    </a>
+</style>
+<div class="container"></div>
+    <div class="backgroundCard">
+    <body>
+        <h1>Welcome to Fantasy Guild Market!</h1>
+        <h3>by {{name}} from {{class}}</h3>
+        <h3 id = "amount">amount: {{ amount }} gil</h3>
+        <table style="width: 80% ;">
+            <tr>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>POWER</th>
+                <th>DESCRIPTION</th>
+                <th>Amount</th>
+                <th>Qty</th>
+                <th>Del</th>
+            </tr>
+            {% for item in items %} 
+            <tr class="row">
+                <td>{{ item.name }}</td>
+                <td>{{ item.price }} gil</td>
+                <td>+{{ item.power }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.amount }}</td>
+                <td>
+                    <a href="increment/{{ item.id }}">
+                        <button>
+                            +
+                        </button>
+                    </a>
+                    <a href="decrement/{{ item.id }}">
+                        <button>
+                            -
+                        </button>
+                    </a>
+                </td>
+                <td>
+                    <a href="delete/{{ item.id }}">
+                        <button>
+                            X
+                        </button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
 
-    <h5>Sesi terakhir login: {{ last_login }}</h5>
-    <script>
+        <h3>total item in inventory: {{ items|length }}</h3>
+        
+        <a href="{% url 'main:create_product' %}">
+            <button>
+                Add New Product
+            </button>
+        </a>
+        <a href="{% url 'main:logout' %}">
+            <button>
+                Logout
+            </button>
+        </a>
 
-    </script>
-</body>
+        <h5>Sesi terakhir login: {{ last_login }}</h5>
+        
+        <script>
+
+        </script>
+    </body>
+    </div>
 </div>
 </html>
+</div>
+
 {% endblock content %}

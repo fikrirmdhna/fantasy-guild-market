@@ -761,7 +761,7 @@ JSON sering digunakan dalam pertukaran data karena:
 | :--------: |:--------:| 
 | merupakan proses verifikasi atau pengecekan identitas seseorang atau login.   | pemberian otoritas atau proses verifikasi jika suatu user mempunya akses terhadap sistem. |  
 
-## Apa itu cookies dalam konteks aplikasi web dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna
+## Apa itu cookies dalam konteks aplikasi web dan bagaimana Django menggunakan cookies untuk mengelola data sesi pengguna?
 
 * Cookies adalah potongan data yang disimpan di sisi klien biasanya untuk menyimpan session id. Cookies juga berguna untuk mengingat informasi login dari si pengguna. 
 
@@ -775,3 +775,233 @@ JSON sering digunakan dalam pertukaran data karena:
 ## Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
 
 * Dalam penggunaan cookies, kita harus mewaspadai terkait data apa yang disimpan ke dalam cookies bukanlah data sensitif dan selalu memvalidasi data sesi pengguna agar tidak terkena session hijacking.
+
+## Kustomisasi tampilan web
+1. Tambahkan kode pada settings.py sebelum bagian `DEFAULT_AUTO_FIELD` di direktori proyek fantasy_guild_market:
+    ```python
+    ...
+    STATIC_URL = 'static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+    ...
+    ```
+2. Membuat folder static yang berada di direktori main untuk menyimpan file.css
+    * login.css
+        ```css
+        *{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-image: url("https://static.wikia.nocookie.net/log-horizon/images/9/9b/RTC.jpg/revision/latest?cb=20141219174242");
+            background-size: cover;
+            background-attachment:fixed;
+            background-repeat: no-repeat;
+        }
+        .container{
+            margin-top: -50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login{
+            background-color: rgba(255,255,255, 0.8);
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 20px;
+            width: 375px;
+        }
+        .loginbutton{
+        margin-right: 85px;
+        }
+        .style1{
+            text-align: center;
+        }
+        ```
+    
+    * register.css
+        ```css
+        *{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        body{
+            background-image: url("https://images.hdqwalls.com/wallpapers/cityscape-sky-anime-girl-peace-alone-4k-yg.jpg");
+            background-size: cover;
+            background-attachment:fixed;
+            background-repeat: no-repeat;
+        }
+        .container{
+            margin-top: -50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login{
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 25px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .title{
+            text-align: center;
+        }
+        .loginbutton{
+            margin-left: -190px;
+        }
+        ```
+
+    * create_product.css
+        ```css
+        *{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+        .container{
+            margin-top: -50px;
+            display: flex;
+            justify-content: center;
+            text-align: left;
+            align-items:center;
+            height: 100vh;
+        }
+        .element{
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+        .h1{
+            text-align: center;
+        }
+        .button{
+            margin-left: 60px;
+        }
+        body{
+            background-image: url("https://i.redd.it/500pllhyaf3b1.jpg?w=144");
+            background-size: cover;
+            background-attachment:fixed;
+            background-repeat: no-repeat;
+        }
+        ```
+    
+    * main.css
+        ```css
+        body{
+            background-image: url("https://getwallpapers.com/wallpaper/full/4/e/2/1282331-sword-art-online-desktop-wallpaper-1920x1080-for-windows-7.jpg");
+            background-size: cover;
+            background-attachment:fixed;
+            background-repeat: no-repeat;
+        }
+        .container{
+            margin-top: -50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 25vh;
+        }
+        .backgroundCard{
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            padding: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            width: 1000px;
+        }
+        div{
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            text-align: center;
+        }
+        h1{
+            text-align: center;
+        }
+        h3{
+            text-align: center;
+        }
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            border-style: solid;
+            border-color: rgb(34, 72, 175);   
+        }
+        th{
+            border-style: outset;
+            border-color: rgb(34, 72, 175);
+            padding: 5px;
+            background-color: lightgrey;
+            text-align: center;
+            font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;;
+        }
+        td{
+            border-style: solid;
+            border-color: rgb(29, 149, 127);
+            background-color:greenyellow;
+            text-align: center;
+        }
+        a{
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+        ```
+
+3. Tambahkan `{% load static %}` di bagian atas setiap file html yang akan dipakaikan file.css dan tambahkan tag link html `<link rel="stylesheet" href="{% static '{nama file}.css' %}">` di dalam {% block meta %} untuk mengimplementasikan file eksternal css ke html yang ingin dikostumisasi.
+
+4. Kostumisasi menggunakan bootstrap css di login.html:
+    ```html
+    {% block meta %}
+    ...
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    ...
+    {% endblock meta %}
+    ```
+
+## Manfaat dari setiap element selector dan kapan waktu yang tepat untuk menggunakannya
+1. Selector Universal (*):
+    Berguna jika ingin mengubah semua elemen di dalam html. Penggunaannya berpengaruh terhadap kinerja.
+2. Tag Selector (`<div>, <h1>`, dsb):
+    Berguna untuk kustomisasi yang berbeda setiap tag html yang ada jadi lebih fleksibel. Dapat digunakan kapan saja. 
+3. Selector ID (#):
+    Berguna jika ingin kostumisasi tag html yang memiliki atribut id yang samasehingga bisa diubah secara unik. Dapat digunakan saat ingin mengubah tampilan secara lebih spesifik. 
+4. Selector Kelas (.):
+    Berguna dalam kostumisasi tag html yang berdasarkan atribut class yang sama. Dapat digunakan saat ingin mengubah tampilan berdasarkan class yang sama.
+
+## HTML5 Tag
+* Merupakan Markup Language standar terbaru, yaitu versi 5 (dideklarasikan dengan `<!DOCTYPE html>`) yang dimana menyediakan berbagai elemen baru, seperti: `<link>, <sytle>, <script>, <nav>`, dan masih banyak lagi.
+
+## Perbedaan antara margin dan padding
+| Margin     | Padding    | 
+| :--------: |:--------:| 
+| merupakan ruang yang berada di luar elemen | merupakan ruang yang berada di dalam elemen |
+| digunakan untuk mengatur letak suatu container | digunakan saat ingin mengatur jarak antara elemen dengan border | 
+| mengatur jarak di luar elemen | mengatur jarak di dalam elemen | 
+
+## Perbedaan antara framework CSS Tailwind dan Bootstrap. Kapan sebaiknya waktu penggunaan Tailwind atau Bootstrap? 
+
+* Perbedaan
+    | Tailwind     | Bootstrap    | 
+    | :--------: |:--------:| 
+    | tampilan dengan menggabungkan class utility yang telah didefinisikan | tampilan yang sudah jadi dan siap pakai |
+    | memiliki file css yang lebih sedikit | memiliki file css yang lebih besar | 
+    | fleksibilitas dan adaptabilitas yang tinggi | tampilan yang lebih konsisten | 
+    | butuh pemahaman lebih tentang class utility | pemahaman lebih cepat karena merupakan tampilan instan | 
+
+* Waktu Penggunaan
+    | Tailwind     | Bootstrap    | 
+    | :--------: |:--------:| 
+    | dapat digunakan saat ingin bebas melakukan kostumisasi dan memiliki kontrol yang tinggi | dapat digunakan saat ingin menampilkan tampilan yang instan |
+    | ingin belajar pendekatan class utility | ingin tampilan yang konsisten dan mudah dipakai | 
+    | ingin menghindari kelas css yang tidak digunakan | sudah terbiasa menggunakan bootstrap khusus untuk proyek yang dibuat | 
+    
