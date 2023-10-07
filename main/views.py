@@ -32,7 +32,10 @@ def create_product(request):
     if form.is_valid() and request.method == "POST":
         product = form.save(commit=False)
         product.user = request.user
-        product.save()
+        if product.amount > 0:
+            product.save()
+        else:
+            messages.error(request, "Invalid Amount")
         return HttpResponseRedirect(reverse('main:show_main'))
 
     context = {'form': form}
@@ -96,7 +99,12 @@ def edit_product(request, id):
 
     if form.is_valid() and request.method == "POST":
         # Simpan form dan kembali ke halaman awal
-        form.save()
+        if product.amount > 0:
+            form.save()
+        elif product.amount == 0:
+            product.delete()
+        else:
+            messages.error(request, "Item amount cannot be negative")
         return HttpResponseRedirect(reverse('main:show_main'))
 
     context = {'form': form}
