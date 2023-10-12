@@ -11,7 +11,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 20vh;
+    height: 18vh;
 }
 .backgroundCard{
     background-color: rgba(255, 255, 255, 0.7);
@@ -42,7 +42,7 @@ h3{
 td.column{
     border-style: solid;
     border-color: rgb(29, 149, 127);
-    background-color:red;
+    background-color:greenyellow;
     text-align: center;
 }
 th{
