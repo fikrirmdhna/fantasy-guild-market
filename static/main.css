@@ -1,0 +1,61 @@
+body{
+    background-image: url("https://getwallpapers.com/wallpaper/full/4/e/2/1282331-sword-art-online-desktop-wallpaper-1920x1080-for-windows-7.jpg");
+    background-size: cover;
+    background-attachment:fixed;
+    background-repeat: no-repeat;
+}
+.container{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    margin-top: -50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 18vh;
+}
+.backgroundCard{
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    padding: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+h1{
+    text-align: center;
+}
+h3{
+    text-align: center;
+}
+.product_table{
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-color: rgb(34, 72, 175);   
+}
+.lastrow:last-child td{
+    background-color: rgb(242, 231, 22);
+}
+td.column{
+    border-style: solid;
+    border-color: rgb(29, 149, 127);
+    background-color:greenyellow;
+    text-align: center;
+}
+th{
+    border-style: outset;
+    border-color: rgb(34, 72, 175);
+    padding: 5px;
+    background-color: lightgrey;
+    text-align: center;
+    font-family:  'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;;
+}
+
+a{
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
