@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseNotFound
 from django.core import serializers
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages  
 from main.forms import ProductForm
 from django.urls import reverse
@@ -129,3 +130,24 @@ def decrement(request, id):
     if(items.amount==0):
         items.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+    
+def get_product_json(request):
+    product_item = Items.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@csrf_exempt
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        amount = request.POST.get("amount")
+        price = request.POST.get("price")
+        power = request.POST.get("power")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Items(name=name, amount=amount ,price=price, power=power, description=description, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()

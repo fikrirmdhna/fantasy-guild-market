@@ -1,5 +1,11 @@
+# **Fantasy Guild Market**
 ## Tautan Aplikasi Adaptable
 Berikut adalah tautan deployment app saya [Fantasy Guild Market](https://fantasy-guild-market.adaptable.app/main/)
+<br>
+
+# Tugas 2 
+<details>
+<summary>Expand</summary>
 
 ## Membuat Proyek Django Baru
 1. Membuat direktori utama, yaitu FANTASY-GUILD-MARKET
@@ -310,7 +316,12 @@ Ketiga itu adalah pola bentuk arsitektur dalam sebuah proyek yang memberikan mod
     | Controller dan View memiliki relasi one-to-many  | Template dan View memiliki relasi one-to-one | View dan ViewModel memiliki relasi one-to-many |
     | Rumit untuk dimodifikasi  | Mudah untuk dimodifikasi | Mudah untuk dimodifikasi jika data binding tidak terlalu complex  |
     | Tidak mememerlukan URL Mapping | Memerlukan URL Mapping  | Tidak terlalu bergantung terhadap URL Mapping |
+</details>
+<br>
 
+# Tugas 3
+<details>
+<summary>Expand</summary>
 
 ## Membuat input form untuk menambahkan object
 1. Membuat file forms.py di direktori main untuk menampilkan page form baru yang berisi kode: 
@@ -486,6 +497,12 @@ JSON sering digunakan dalam pertukaran data karena:
 
 5. JSON by ID
 ![](image/Screenshot%202023-09-19%20at%2008.30.06.png)
+</details>
+<br>
+
+# Tugas 4
+<details>
+<summary>Expand</summary>
 
 ## Mengimplementasikan fungsi registrasi, login, dan logout
 1. Tambahkan import pada views.py:
@@ -775,6 +792,12 @@ JSON sering digunakan dalam pertukaran data karena:
 ## Apakah penggunaan cookies aman secara default dalam pengembangan web, atau apakah ada risiko potensial yang harus diwaspadai?
 
 * Dalam penggunaan cookies, kita harus mewaspadai terkait data apa yang disimpan ke dalam cookies bukanlah data sensitif dan selalu memvalidasi data sesi pengguna agar tidak terkena session hijacking.
+</details>
+<br>
+
+# Tugas 5
+<details>
+<summary>Expand</summary>
 
 ## Kustomisasi tampilan web
 1. Tambahkan kode pada settings.py sebelum bagian `DEFAULT_AUTO_FIELD` di direktori proyek fantasy_guild_market:
@@ -1004,4 +1027,215 @@ JSON sering digunakan dalam pertukaran data karena:
     | dapat digunakan saat ingin bebas melakukan kostumisasi dan memiliki kontrol yang tinggi | dapat digunakan saat ingin menampilkan tampilan yang instan |
     | ingin belajar pendekatan class utility | ingin tampilan yang konsisten dan mudah dipakai | 
     | ingin menghindari kelas css yang tidak digunakan | sudah terbiasa menggunakan bootstrap khusus untuk proyek yang dibuat | 
+</details>
+<br>
+
+# Tugas 6
+
+## Implementasi AJAX GET
+1. Membuat fungsi untuk me-return data JSON di views.py: 
+    ```python
+    def get_product_json(request):
+        product_item = Items.objects.filter(user=request.user)
+        return HttpResponse(serializers.serialize('json', product_item))
+    ```
+
+2. Menambahkan function async getProducts() di dalam main.html:
+    ```html
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+    </script>
+    ```
+
+## Implementasi AJAX POST
+1. Membuat tombol untuk memunculkan modal form dengan cara menambahkan kode berikut ke dalam main.html:
+    ```html
+    <div class="modal fade" id="exampleModal" role="dialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form" onsubmit="return false;">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="name" name="name"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="amount" class="col-form-label">Amount:</label>
+                                <input type="number" class="form-control" id="amount" name="amount"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="price" class="col-form-label">Price:</label>
+                                <input type="number" class="form-control" id="price" name="price"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="power" class="col-form-label">Power:</label>
+                                <input type="number" class="form-control" id="power" name="power"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="col-form-label">Description:</label>
+                                <textarea class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ```
+    ```html
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
+    ```
+    Saat tombol ditekan akan men-trigger class container modal dan container dengan id exampleModal.
+
+2. Menambahkan fungsi baru di dalam views.py untuk menambahkan item baru ke dalam basis data
+    * Import ```from django.views.decorators.csrf import csrf_exempt``` untuk penggunaan token. 
+    * Menambahkan fungsi add_product_ajax: 
+        ```python
+        @csrf_exempt
+        def add_product_ajax(request):
+            if request.method == 'POST':
+                name = request.POST.get("name")
+                amount = request.POST.get("amount")
+                price = request.POST.get("price")
+                power = request.POST.get("power")
+                description = request.POST.get("description")
+                user = request.user
+
+                new_product = Items(name=name, amount=amount ,price=price, power=power, description=description, user=user)
+                new_product.save()
+
+                return HttpResponse(b"CREATED", status=201)
+
+            return HttpResponseNotFound()
+        ```
+    * Menambahkan path /add_product_ajax/ ke dalam urls.py yang berada di direktori main:
+        ```python
+        from main.views import add_product_ajax ...
+        urlpatterns = [
+            ...
+            path('create-product-ajax/', add_product_ajax, name='add_product_ajax'),
+        ]
+        ```
+    * Membuat function script di dalam main.html:
+        ```javascript
+        function addProduct() {
+            fetch("{% url 'main:add_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+        document.getElementById("button_add").onclick = addProduct
+        ```
+        Saat tombol Add Product modal ditekan function akan mengambil data yang diisi berdasarkan form tag dengan atribut id form dengan memanggil fungsi add_product_ajax yang berada di views.py dan akan memproses semua data yang sudah diisi di dalam modal, lalu data akan disimpan berdasarkan user yang login ke dalam basis data. 
     
+3. Melakukan refresh halaman utama secara asinkronus untuk menampilkan daftar item terbaru tanpa reload halaman utama secara keseluruhan
+    * Membuat function async di dalam main.html:
+        ```javascript
+        async function refreshProducts() {
+            document.getElementById("product_table").innerHTML = ""
+            const products = await getProducts()
+            let htmlString = `<tr>
+                <th>NAME</th>
+                <th>PRICE</th>
+                <th>POWER</th>
+                <th>DESCRIPTION</th>
+                <th>Amount</th>
+                <th>Qty</th>
+                <th>Del</th>
+                <th>Edit</th>
+            </tr>`
+            products.forEach((item) => {
+                htmlString += `\n<tr class="lastrow">
+                    <td class="column">${item.fields.name}</td>
+                    <td class="column">${item.fields.price}</td>
+                    <td class="column">${item.fields.power}</td>
+                    <td class="column">${item.fields.description}</td>
+                    <td class="column">${item.fields.amount}</td>
+                    <td class="column">
+                        <a href="increment/${item.pk}">
+                            <button>
+                                +
+                            </button>
+                        </a>
+                        <a href="decrement/${item.pk}">
+                            <button>
+                                -
+                            </button>
+                        </a>
+                    </td>
+                    <td class="column">
+                        <a href="delete/${item.pk}">
+                            <button>
+                                X
+                            </button>
+                        </a>
+                    </td>
+                    <td class="column">
+                        <a href="edit-product/${item.pk}">
+                            <button>
+                                Edit
+                            </button>
+                        </a>
+                    </td>
+            </tr>` 
+            })
+            document.getElementById("product_table").innerHTML = htmlString
+        }
+        refreshProducts()
+        ```
+
+    * Saat memanggil function addProduct() pastikan setelah memproses data dari query form akan memanggil function refreshProduct():
+        ```javascript
+        function addProduct() {
+            fetch("{% url 'main:add_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+            ...
+        }
+        ```
+
+## Perbedaan antara Asynchronous Programming dan Synchronous Programming
+| Asynchronous Programming | Synchronous Programming | 
+| :--------: |:--------:| 
+| Dapat melakukan operasi yang lain tanpa harus menunggu operasi sebelumnya selesai | Melakukan operasi secara berurutan operasi lain akan dijalankan ketika operasi yang sedang dilakukan telah selesai |
+| Dapat meningkatkan efisiensi dan efektivitas program | Program akan terasa lambat dan tidak responsif |
+| Contoh: async/await, callback function, promises, etc | Contoh: blocking programming | 
+
+## Event Driven Programming 
+Merupakan paradigma programming yang mengatur sebagai event handler atau penangan suatu peristiwa, seperti menekan button atau melakukan sesuatu yang men-trigger event listener dan bersifat responsif terhadap interaksi pengguna. 
+
+Contoh yang diterapkan dalam tugas ini adalah function addProduct di dalam script tag main.html. Tombol ini akan merespon saat pengguna sudah selesai mengisi data suatu item di dalam modal dan saat menekan tombol Add Product, maka instruksi yang berada dalam function addProduct akan dijalankan. 
+
+## Penerapan asynchronous programming pada AJAX
+implementasi function async dan operator await yang menggunakan fetch API untuk mendapatkan data dari function get_product_json secara asinkronus dan blok then() akan memproses data yang diterima. Operator await di sini berperan untuk mengelola data dari kode asinkronus.
+```javascript
+async function getProducts() {
+    return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+}
+```
+```javascript
+async function refreshProducts() {
+    document.getElementById("product_table").innerHTML = ""
+    const products = await getProducts()
+    ...
+}
+```
+
+## Kenapa penerapan AJAX pada tugas ini menggunakan fetch API daripada library jQuery
+* Dalam tugas ini, data delivery yang digunakan adalah JSON, dengan menggunakan fetch API untuk merespon format data JSON lebih mudah dibanding dengan jQuery.
+* Fetch API merupakan build-in dari browser itu sendiri sehingga tidak perlu menambahkan library baru.
+* Lebih ringan dan fleksibel karena fetch API hanya akan menggunakan fitur yang akan digunakan saja dan dapat dikonfigurasi dengan mudah. 
