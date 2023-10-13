@@ -1,6 +1,7 @@
 # **Fantasy Guild Market**
-## Tautan Aplikasi Adaptable
-Berikut adalah tautan deployment app saya [Fantasy Guild Market](https://fantasy-guild-market.adaptable.app/main/)
+## Tautan Aplikasi
+* Tautan link Adaptable *(sebelum deactivate)*: [Fantasy Guild Market](https://fantasy-guild-market.adaptable.app/main/)
+* Tautan link PaaS Fasilkom: [Fantasy Guild Market](http://fikri-dhiya21-tugas.pbp.cs.ui.ac.id)
 <br>
 
 # Tugas 2 
