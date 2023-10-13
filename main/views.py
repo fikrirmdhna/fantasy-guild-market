@@ -111,25 +111,37 @@ def edit_product(request, id):
     context = {'form': form}
     return render(request, "edit_product.html", context)
 
+@csrf_exempt
 def delete(request, id):
-    Items.objects.get(pk=id).delete()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    if request.method == "DELETE":
+        item = Items.objects.get(pk=id)
+        item.delete()
+        return HttpResponse(b"DELETED", status=200)
 
+    return HttpResponseNotFound()
+
+@csrf_exempt
 def increment(request, id):
-    items = Items.objects.get(pk=id)
-    if(items.amount > 0):
-        items.amount +=1
-        items.save()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    if request.method == "POST":
+        items = Items.objects.get(pk=id)
+        if(items.amount > 0):
+            items.amount +=1
+            items.save()
+        return HttpResponse(b"ADDED", status=200)
+    return HttpResponseNotFound()
 
+@csrf_exempt
 def decrement(request, id):
-    items = Items.objects.get(pk=id)
-    if(items.amount > 0):
-        items.amount -=1
-        items.save()
-    if(items.amount==0):
-        items.delete()
-    return HttpResponseRedirect(reverse('main:show_main'))
+    if request.method == "POST":
+        items = Items.objects.get(pk=id)
+        if(items.amount > 0):
+            items.amount -=1
+            items.save()
+        if(items.amount==0):
+            items.delete()
+        return HttpResponse(b"REDUCED", status=200)
+
+    return HttpResponseNotFound()
     
 def get_product_json(request):
     product_item = Items.objects.filter(user=request.user)

@@ -151,23 +151,23 @@
                             <td class="column">${item.fields.description}</td>
                             <td class="column">${item.fields.amount}</td>
                             <td class="column">
-                                <a href="increment/${item.pk}">
-                                    <button>
+                                
+                                    <button onclick="addAmount(${item.pk})">
                                         +
                                     </button>
-                                </a>
-                                <a href="decrement/${item.pk}">
-                                    <button>
+                                
+                                
+                                    <button onclick="decreaseAmount(${item.pk})">
                                         -
                                     </button>
-                                </a>
+                                
                             </td>
                             <td class="column">
-                                <a href="delete/${item.pk}">
-                                    <button>
+                                
+                                    <button onclick="deleteProduct(${item.pk})">
                                         X
                                     </button>
-                                </a>
+                                
                             </td>
                             <td class="column">
                                 <a href="edit-product/${item.pk}">
@@ -179,6 +179,9 @@
                     </tr>` 
                     })
                     document.getElementById("product_table").innerHTML = htmlString
+                    document.getElementById("totalItem").innerHTML = ""
+                    let htmlTotalString =`total item in inventory: ${products.length}`
+                    document.getElementById("totalItem").innerHTML = htmlTotalString
                 }
                 refreshProducts()
 
@@ -193,12 +196,30 @@
                 }
                 document.getElementById("button_add").onclick = addProduct
 
-                function deleteProduct(){
+                function deleteProduct(id){
+                    fetch(`delete/${id}`,{
+                        method: "DELETE",
+                    }).then(refreshProducts)
 
+                    return false
+                }
+                function addAmount(id){
+                    fetch(`increment/${id}`,{
+                        method: "POST",
+                    }).then(refreshProducts)
+
+                    return false
+                }
+                function decreaseAmount(id){
+                    fetch(`decrement/${id}`,{
+                        method: "POST",
+                    }).then(refreshProducts)
+
+                    return false
                 }
             </script>
 
-            <h3>total item in inventory: {{ items|length }}</h3>
+            <h3 id="totalItem"></h3>
             
             <a>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
