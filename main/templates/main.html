@@ -225,11 +225,6 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
             </a>
             
-            <!-- <a href="{% url 'main:create_product' %}">
-                <button>
-                    Add New Product
-                </button>
-            </a> -->
             <a href="{% url 'main:logout' %}">
                 <button>
                     Logout
@@ -251,51 +246,4 @@
 </body>
 {% endblock content %}
 
- <!-- <table style="width: 80% ;">
-            <tr>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>POWER</th>
-                <th>DESCRIPTION</th>
-                <th>Amount</th>
-                <th>Qty</th>
-                <th>Del</th>
-                <th>Edit</th>
-            </tr>
-            {% for item in items %} 
-            <tr class="row">
-                <td>{{ item.name }}</td>
-                <td>{{ item.price }} gil</td>
-                <td>+{{ item.power }}</td>
-                <td>{{ item.description }}</td>
-                <td>{{ item.amount }}</td>
-                <td>
-                    <a href="increment/{{ item.id }}">
-                        <button>
-                            +
-                        </button>
-                    </a>
-                    <a href="decrement/{{ item.id }}">
-                        <button>
-                            -
-                        </button>
-                    </a>
-                </td>
-                <td>
-                    <a href="delete/{{ item.id }}">
-                        <button>
-                            X
-                        </button>
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'main:edit_product' item.pk %}">
-                        <button>
-                            Edit
-                        </button>
-                    </a>
-                </td>
-                
-            </tr>
-            {% endfor %}
-        </table> -->
+ 
