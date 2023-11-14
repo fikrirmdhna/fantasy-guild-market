@@ -152,12 +152,12 @@
                             <td class="column">${item.fields.amount}</td>
                             <td class="column">
                                 
-                                    <button onclick="addAmount(${item.pk})">
+                                    <button onclick="addAmountbyAjax(${item.pk})">
                                         +
                                     </button>
                                 
                                 
-                                    <button onclick="decreaseAmount(${item.pk})">
+                                    <button onclick="decreaseAmountbyAjax(${item.pk})">
                                         -
                                     </button>
                                 
@@ -203,14 +203,14 @@
 
                     return false
                 }
-                function addAmount(id){
+                function addAmountbyAjax(id){
                     fetch(`increment/${id}`,{
                         method: "POST",
                     }).then(refreshProducts)
 
                     return false
                 }
-                function decreaseAmount(id){
+                function decreaseAmountbyAjax(id){
                     fetch(`decrement/${id}`,{
                         method: "POST",
                     }).then(refreshProducts)
