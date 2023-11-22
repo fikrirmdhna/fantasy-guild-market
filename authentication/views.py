@@ -1,8 +1,28 @@
+import json
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
+def register(request):
+    if request.method == "POST":
+        input = json.loads(request.body)
+        username = input['username']
+        password = input['password']
+
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({"status": False, "message": "Username is already found!"}, status=400)
+        
+        user = User.objects.create_user(username = username, password = password)
+        user.save()
+        
+        return JsonResponse({
+            "status": True,
+            "message": "Success!"
+        }, status=200)
+    
 @csrf_exempt
 def login(request):
     username = request.POST['username']
